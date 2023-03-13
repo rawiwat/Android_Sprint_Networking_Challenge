@@ -115,21 +115,7 @@ class MainActivity : AppCompatActivity(), Callback<List<Pokemon>> {
 
                     val imageURL = ApiReceiver().getPokemon().toString()
                     println(imageURL)
-                    Picasso.get().load(imageURL).into(object : Target {
-                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                            // set the bitmap to the ImageView
-                            imageView.setImageBitmap(bitmap)
-                        }
 
-                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                            // handle error
-                        }
-
-                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                            // set a placeholder drawable if needed
-                            imageView.setImageDrawable(placeHolderDrawable)
-                        }
-                    })
                     true
                 }
                 else -> super.onKeyUp(keyCode, event)
@@ -165,4 +151,12 @@ class MainActivity : AppCompatActivity(), Callback<List<Pokemon>> {
             return pokemonAPI.getPokemon(ID = enterID.toString())
         }
     }
+    //testing
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://pokeapi.co/api/v2/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val pokemonResponse = service.getPokemon("pikachu").execute().body()
+    val imageUrl = pokemonResponse?.sprites?.front_default
 }
